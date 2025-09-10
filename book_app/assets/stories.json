@@ -7,12 +7,24 @@
       {
         "id": 1,
         "title": "Chương 1",
-        "content": "Ngày xửa ngày xưa..."
+        "content": "Ngày xửa ngày xưa có một cô bé tên là A..."
       },
       {
         "id": 2,
         "title": "Chương 2",
-        "content": "Tiếp theo là..."
+        "content": "Cô bé gặp một bà tiên và câu chuyện bắt đầu..."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Truyện cổ tích B",
+    "author": "Nguyễn Văn B",
+    "chapters": [
+      {
+        "id": 1,
+        "title": "Chương 1",
+        "content": "Một cậu bé nghèo nhưng tốt bụng..."
       }
     ]
   }

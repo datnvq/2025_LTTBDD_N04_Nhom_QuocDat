@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,16 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ứng dụng đọc sách',
+      title: 'App đọc truyện',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Xin chào Flutter!',
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-      ),
+      home: const HomeScreen(),
     );
   }
 }
