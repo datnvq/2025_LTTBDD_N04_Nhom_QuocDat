@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "title": "Truyện cổ tích A",
+    "author": "Nguyễn Văn A",
+    "chapters": [
+      {
+        "id": 1,
+        "title": "Chương 1",
+        "content": "Ngày xửa ngày xưa..."
+      },
+      {
+        "id": 2,
+        "title": "Chương 2",
+        "content": "Tiếp theo là..."
+      }
+    ]
+  }
+]
