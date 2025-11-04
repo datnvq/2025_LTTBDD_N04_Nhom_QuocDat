@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'providers/weather_provider.dart';
+import 'providers/locale_provider.dart';
 import 'services/weather_api.dart';
 import 'screens/home_screen.dart';
 
@@ -20,14 +23,32 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => WeatherProvider(WeatherApi(apiKey: apiKey)),
         ),
+        ChangeNotifierProvider(
+          create: (_) => LocaleProvider(),
+        ),
       ],
-      child: MaterialApp(
-        title: 'Weather Now',
-        theme: _buildLightTheme(),
-        darkTheme: _buildDarkTheme(),
-        themeMode: ThemeMode.system,
-        home: const HomeScreen(),
-        debugShowCheckedModeBanner: false,
+      child: Consumer<LocaleProvider>(
+        builder: (context, localeProvider, child) {
+          return MaterialApp(
+            title: 'Weather Now',
+            theme: _buildLightTheme(),
+            darkTheme: _buildDarkTheme(),
+            themeMode: ThemeMode.system,
+            locale: localeProvider.locale,
+            localizationsDelegates: const [
+              // AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+              Locale('vi'), // Vietnamese
+            ],
+            home: const HomeScreen(),
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
     );
   }
