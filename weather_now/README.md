@@ -1,16 +1,107 @@
-# weather_now
+# Weather Now - Ứng dụng xem thời tiết thực
 
-A new Flutter project.
+Ứng dụng Android Flutter để xem thông tin thời tiết thực tế sử dụng OpenWeatherMap API.
 
-## Getting Started
+## ✨ Tính năng
 
-This project is a starting point for a Flutter application.
+- 🌍 **Tìm kiếm thời tiết theo tên thành phố**
+- 📍 **Lấy thời tiết vị trí hiện tại** (sử dụng GPS)
+- 🌡️ **Hiển thị thông tin chi tiết:**
+  - Nhiệt độ (°C)
+  - Mô tả thời tiết
+  - Độ ẩm
+  - Tốc độ gió
+  - Icon thời tiết
+- 🎨 **Giao diện đẹp với Material Design 3**
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Cài đặt và Chạy
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Yêu cầu
+- Flutter SDK (phiên bản >=3.9.2)
+- Android Studio / VS Code
+- Thiết bị Android hoặc Emulator
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Các bước thực hiện
+
+1. **Clone repository:**
+```bash
+git clone <repository-url>
+cd weather_now
+```
+
+2. **Cài đặt dependencies:**
+```bash
+flutter pub get
+```
+
+3. **Lấy API Key từ OpenWeatherMap:**
+   - Truy cập: https://openweathermap.org/api
+   - Đăng ký tài khoản miễn phí
+   - Vào phần API Keys và copy key của bạn
+
+4. **Cấu hình API Key:**
+   - Mở file `lib/main.dart`
+   - Thay thế `YOUR_OPENWEATHER_API_KEY` bằng API key của bạn:
+   ```dart
+   const apiKey = 'your_actual_api_key_here';
+   ```
+
+5. **Chạy ứng dụng:**
+```bash
+# Kiểm tra thiết bị đã kết nối
+flutter devices
+
+# Chạy trên thiết bị/emulator
+flutter run
+```
+
+## 📦 Dependencies
+
+- `http: ^1.5.0` - Gọi API
+- `geolocator: ^14.0.2` - Lấy vị trí GPS
+- `provider: ^6.1.5+1` - Quản lý state
+- `intl: ^0.20.2` - Format ngày giờ
+
+## 🏗️ Cấu trúc dự án
+
+```
+lib/
+├── main.dart                 # Entry point
+├── models/
+│   └── weather.dart         # Model dữ liệu thời tiết
+├── providers/
+│   └── weather_provider.dart # State management
+├── screens/
+│   └── home_screen.dart     # Màn hình chính
+├── services/
+│   └── weather_api.dart     # Service gọi API
+└── widgets/
+    └── weather_card.dart    # Widget hiển thị thông tin
+```
+
+## 📱 Cách sử dụng
+
+1. **Tìm kiếm theo thành phố:**
+   - Nhập tên thành phố vào ô tìm kiếm
+   - Nhấn nút tìm kiếm hoặc Enter
+
+2. **Sử dụng vị trí hiện tại:**
+   - Nhấn nút icon định vị
+   - Cho phép ứng dụng truy cập vị trí
+   - Thông tin thời tiết sẽ hiển thị dựa trên GPS
+
+## 🔐 Permissions
+
+Ứng dụng yêu cầu các quyền sau:
+- `INTERNET` - Để gọi API
+- `ACCESS_FINE_LOCATION` - Để lấy vị trí chính xác
+- `ACCESS_COARSE_LOCATION` - Để lấy vị trí gần đúng
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+## 👥 Nhóm phát triển
+
+Nhóm QuocDat - LTTBDD N04 - 2025
+
