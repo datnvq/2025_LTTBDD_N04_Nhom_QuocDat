@@ -25,6 +25,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   List<String> _searchHistory = []; // Lịch sử tìm kiếm
   List<String> _compareList = []; // Danh sách thành phố để so sánh (max 2)
   Map<String, Weather?> _compareWeatherData = {}; // Dữ liệu thời tiết cho so sánh
+  
+  // Weather alerts settings
+  bool _alertsEnabled = false;
+  double _maxTempAlert = 35.0;
+  double _minTempAlert = 10.0;
+  double _maxHumidityAlert = 90.0;
+  double _maxWindAlert = 15.0;
+  
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -462,6 +470,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _selectedCity = _allCities[_selectedCountry]?.first;
     // Load search history
     _loadSearchHistory();
+    // Load alert settings
+    _loadAlertSettings();
     // Animation controller
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
@@ -1139,8 +1149,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
 
                     // Weather Card
-                    if (provider.current != null)
+                    if (provider.current != null) ...[
                       WeatherCard(data: provider.current!),
+                      // Check for weather alerts after widget is built
+                      Builder(
+                        builder: (context) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            _checkWeatherAlerts(provider.current!);
+                          });
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
 
                     // Empty State
                     if (!provider.isLoading &&
@@ -1359,13 +1379,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             context,
             icon: Icons.notifications_active_rounded,
             title: 'Cảnh báo thời tiết',
-            subtitle: 'Nhận thông báo',
+            subtitle: _alertsEnabled ? 'Đang bật' : 'Đang tắt',
             gradient: [Colors.orange, Colors.deepOrangeAccent],
             onTap: () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Tính năng đang phát triển...')),
-              );
+              _showWeatherAlertsDialog(context);
             },
           ),
 
@@ -2305,6 +2323,418 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   String _formatDateTime(DateTime time) {
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+  }
+
+  void _showWeatherAlertsDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    showDialog(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.orange, Colors.deepOrangeAccent],
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.notifications_active_rounded, color: Colors.white, size: 20),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(child: Text('🔔 Cảnh báo thời tiết')),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Enable/Disable switch
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        _alertsEnabled 
+                          ? Colors.green.withOpacity(0.1)
+                          : Colors.grey.withOpacity(0.1),
+                        _alertsEnabled
+                          ? Colors.lightGreen.withOpacity(0.1)
+                          : Colors.grey.withOpacity(0.05),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _alertsEnabled 
+                        ? Colors.green.withOpacity(0.3)
+                        : Colors.grey.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _alertsEnabled ? Icons.notifications_active : Icons.notifications_off,
+                        color: _alertsEnabled ? Colors.green : Colors.grey,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Bật cảnh báo',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.onSurface,
+                              ),
+                            ),
+                            Text(
+                              _alertsEnabled 
+                                ? 'Nhận thông báo khi có điều kiện bất thường'
+                                : 'Tắt tất cả cảnh báo',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Switch(
+                        value: _alertsEnabled,
+                        onChanged: (value) {
+                          setDialogState(() {
+                            setState(() {
+                              _alertsEnabled = value;
+                              _saveAlertSettings();
+                            });
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                
+                if (_alertsEnabled) ...[
+                  const SizedBox(height: 20),
+                  
+                  // Nhiệt độ tối đa
+                  Text(
+                    '🌡️ Nhiệt độ tối đa',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          value: _maxTempAlert,
+                          min: 25,
+                          max: 45,
+                          divisions: 20,
+                          label: '${_maxTempAlert.round()}°C',
+                          onChanged: (value) {
+                            setDialogState(() {
+                              setState(() {
+                                _maxTempAlert = value;
+                              });
+                            });
+                          },
+                          onChangeEnd: (value) => _saveAlertSettings(),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${_maxTempAlert.round()}°C',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Nhiệt độ tối thiểu
+                  Text(
+                    '❄️ Nhiệt độ tối thiểu',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          value: _minTempAlert,
+                          min: 0,
+                          max: 20,
+                          divisions: 20,
+                          label: '${_minTempAlert.round()}°C',
+                          onChanged: (value) {
+                            setDialogState(() {
+                              setState(() {
+                                _minTempAlert = value;
+                              });
+                            });
+                          },
+                          onChangeEnd: (value) => _saveAlertSettings(),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${_minTempAlert.round()}°C',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Độ ẩm tối đa
+                  Text(
+                    '💧 Độ ẩm tối đa',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          value: _maxHumidityAlert,
+                          min: 60,
+                          max: 100,
+                          divisions: 40,
+                          label: '${_maxHumidityAlert.round()}%',
+                          onChanged: (value) {
+                            setDialogState(() {
+                              setState(() {
+                                _maxHumidityAlert = value;
+                              });
+                            });
+                          },
+                          onChangeEnd: (value) => _saveAlertSettings(),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.cyan.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${_maxHumidityAlert.round()}%',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.cyan,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Tốc độ gió tối đa
+                  Text(
+                    '💨 Tốc độ gió tối đa',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          value: _maxWindAlert,
+                          min: 10,
+                          max: 30,
+                          divisions: 20,
+                          label: '${_maxWindAlert.round()} m/s',
+                          onChanged: (value) {
+                            setDialogState(() {
+                              setState(() {
+                                _maxWindAlert = value;
+                              });
+                            });
+                          },
+                          onChangeEnd: (value) => _saveAlertSettings(),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${_maxWindAlert.round()} m/s',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.purple,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Info box
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.info_outline, color: Colors.amber, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Bạn sẽ thấy cảnh báo trên màn hình khi thời tiết vượt ngưỡng',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: theme.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Đóng'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveAlertSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('alerts_enabled', _alertsEnabled);
+    await prefs.setDouble('max_temp_alert', _maxTempAlert);
+    await prefs.setDouble('min_temp_alert', _minTempAlert);
+    await prefs.setDouble('max_humidity_alert', _maxHumidityAlert);
+    await prefs.setDouble('max_wind_alert', _maxWindAlert);
+  }
+
+  Future<void> _loadAlertSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _alertsEnabled = prefs.getBool('alerts_enabled') ?? false;
+      _maxTempAlert = prefs.getDouble('max_temp_alert') ?? 35.0;
+      _minTempAlert = prefs.getDouble('min_temp_alert') ?? 10.0;
+      _maxHumidityAlert = prefs.getDouble('max_humidity_alert') ?? 90.0;
+      _maxWindAlert = prefs.getDouble('max_wind_alert') ?? 15.0;
+    });
+  }
+
+  void _checkWeatherAlerts(Weather weather) {
+    if (!_alertsEnabled) return;
+    
+    List<String> alerts = [];
+    
+    if (weather.tempC > _maxTempAlert) {
+      alerts.add('🔥 Nhiệt độ cao: ${weather.tempC.round()}°C (> ${_maxTempAlert.round()}°C)');
+    }
+    
+    if (weather.tempC < _minTempAlert) {
+      alerts.add('❄️ Nhiệt độ thấp: ${weather.tempC.round()}°C (< ${_minTempAlert.round()}°C)');
+    }
+    
+    if (weather.humidity > _maxHumidityAlert) {
+      alerts.add('💧 Độ ẩm cao: ${weather.humidity}% (> ${_maxHumidityAlert.round()}%)');
+    }
+    
+    if (weather.windMs > _maxWindAlert) {
+      alerts.add('💨 Gió mạnh: ${weather.windMs.toStringAsFixed(1)} m/s (> ${_maxWindAlert.round()} m/s)');
+    }
+    
+    if (alerts.isNotEmpty) {
+      _showAlertNotification(alerts);
+    }
+  }
+
+  void _showAlertNotification(List<String> alerts) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 24),
+            ),
+            const SizedBox(width: 12),
+            const Text('⚠️ Cảnh báo thời tiết'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: alerts.map((alert) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              children: [
+                const Icon(Icons.arrow_right, size: 20, color: Colors.orange),
+                const SizedBox(width: 8),
+                Expanded(child: Text(alert)),
+              ],
+            ),
+          )).toList(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Đã hiểu'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showDevelopersDialog(BuildContext context) {
