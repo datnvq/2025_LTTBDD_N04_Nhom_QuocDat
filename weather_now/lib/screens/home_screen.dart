@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../providers/weather_provider.dart';
 import '../providers/locale_provider.dart';
+import '../providers/theme_provider.dart';
 import '../models/weather.dart';
 import '../services/weather_api.dart';
 import '../widgets/weather_card.dart';
@@ -1732,12 +1733,29 @@ class _HomeScreenState extends State<HomeScreen>
             trailing: Switch(
               value: Theme.of(context).brightness == Brightness.dark,
               onChanged: (value) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Tính năng đang phát triển...')),
+                final themeProvider = Provider.of<ThemeProvider>(
+                  context,
+                  listen: false,
                 );
+                if (value) {
+                  themeProvider.setThemeMode(ThemeMode.dark);
+                } else {
+                  themeProvider.setThemeMode(ThemeMode.light);
+                }
               },
             ),
-            onTap: () {},
+            onTap: () {
+              final themeProvider = Provider.of<ThemeProvider>(
+                context,
+                listen: false,
+              );
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              if (isDark) {
+                themeProvider.setThemeMode(ThemeMode.light);
+              } else {
+                themeProvider.setThemeMode(ThemeMode.dark);
+              }
+            },
           ),
 
           ListTile(

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'providers/weather_provider.dart';
 import 'providers/locale_provider.dart';
+import 'providers/theme_provider.dart';
 import 'services/weather_api.dart';
 import 'screens/home_screen.dart';
 
@@ -24,14 +25,15 @@ class MyApp extends StatelessWidget {
           create: (_) => WeatherProvider(WeatherApi(apiKey: apiKey)),
         ),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: Consumer<LocaleProvider>(
-        builder: (context, localeProvider, child) {
+      child: Consumer2<LocaleProvider, ThemeProvider>(
+        builder: (context, localeProvider, themeProvider, child) {
           return MaterialApp(
             title: 'Weather Now',
             theme: _buildLightTheme(),
             darkTheme: _buildDarkTheme(),
-            themeMode: ThemeMode.system,
+            themeMode: themeProvider.themeMode,
             locale: localeProvider.locale,
             localizationsDelegates: const [
               // AppLocalizations.delegate,
