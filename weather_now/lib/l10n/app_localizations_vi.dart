@@ -149,4 +149,86 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get germany => '🇩🇪 Đức';
+
+  @override
+  String get home => 'Trang chủ';
+
+  @override
+  String get weatherApp => 'Ứng dụng thời tiết';
+
+  @override
+  String get features => 'Tính năng';
+
+  @override
+  String get information => 'Thông tin';
+
+  @override
+  String get favorites => 'Yêu thích';
+
+  @override
+  String get cities => 'thành phố';
+
+  @override
+  String get searchHistory => 'Lịch sử tìm kiếm';
+
+  @override
+  String get searches => 'tìm kiếm';
+
+  @override
+  String get weatherAlerts => 'Cảnh báo thời tiết';
+
+  @override
+  String get enabled => 'Đang bật';
+
+  @override
+  String get disabled => 'Đang tắt';
+
+  @override
+  String get rateApp => 'Đánh giá ứng dụng';
+
+  @override
+  String get thankYou => 'Cảm ơn bạn!';
+
+  @override
+  String get favoriteCities => 'Thành phố yêu thích';
+
+  @override
+  String get noFavorites => 'Chưa có thành phố yêu thích';
+
+  @override
+  String get searchTooltip => 'Tìm kiếm';
+
+  @override
+  String get deleteTooltip => 'Xóa';
+
+  @override
+  String get close => 'Đóng';
+
+  @override
+  String get cancel => 'Hủy';
+
+  @override
+  String get noSearchHistory => 'Chưa có lịch sử tìm kiếm';
+
+  @override
+  String get recentSearch => 'Tìm kiếm gần đây';
+
+  @override
+  String get deleteAll => 'Xóa tất cả';
+
+  @override
+  String addedToFavorites(String city) {
+    return 'Đã thêm $city vào yêu thích';
+  }
+
+  @override
+  String removedFromFavorites(String city) {
+    return 'Đã xóa $city khỏi yêu thích';
+  }
+
+  @override
+  String get addFavorite => 'Thêm yêu thích';
+
+  @override
+  String get favorited => 'Đã yêu thích';
 }

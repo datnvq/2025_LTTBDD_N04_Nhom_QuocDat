@@ -45,5 +45,45 @@
   "thailand": "🇹🇭 Thái Lan",
   "singapore": "🇸🇬 Singapore",
   "france": "🇫🇷 Pháp",
-  "germany": "🇩🇪 Đức"
+  "germany": "🇩🇪 Đức",
+  "home": "Trang chủ",
+  "weatherApp": "Ứng dụng thời tiết",
+  "features": "Tính năng",
+  "information": "Thông tin",
+  "favorites": "Yêu thích",
+  "cities": "thành phố",
+  "searchHistory": "Lịch sử tìm kiếm",
+  "searches": "tìm kiếm",
+  "weatherAlerts": "Cảnh báo thời tiết",
+  "enabled": "Đang bật",
+  "disabled": "Đang tắt",
+  "rateApp": "Đánh giá ứng dụng",
+  "thankYou": "Cảm ơn bạn!",
+  "favoriteCities": "Thành phố yêu thích",
+  "noFavorites": "Chưa có thành phố yêu thích",
+  "searchTooltip": "Tìm kiếm",
+  "deleteTooltip": "Xóa",
+  "close": "Đóng",
+  "cancel": "Hủy",
+  "noSearchHistory": "Chưa có lịch sử tìm kiếm",
+  "recentSearch": "Tìm kiếm gần đây",
+  "deleteAll": "Xóa tất cả",
+  "addedToFavorites": "Đã thêm {city} vào yêu thích",
+  "@addedToFavorites": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "removedFromFavorites": "Đã xóa {city} khỏi yêu thích",
+  "@removedFromFavorites": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "addFavorite": "Thêm yêu thích",
+  "favorited": "Đã yêu thích"
 }

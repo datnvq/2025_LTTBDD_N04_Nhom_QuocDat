@@ -379,6 +379,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'🇩🇪 Germany'**
   String get germany;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @weatherApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Application'**
+  String get weatherApp;
+
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
+  /// No description provided for @information.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get information;
+
+  /// No description provided for @favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favorites;
+
+  /// No description provided for @cities.
+  ///
+  /// In en, this message translates to:
+  /// **'cities'**
+  String get cities;
+
+  /// No description provided for @searchHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Search History'**
+  String get searchHistory;
+
+  /// No description provided for @searches.
+  ///
+  /// In en, this message translates to:
+  /// **'searches'**
+  String get searches;
+
+  /// No description provided for @weatherAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Alerts'**
+  String get weatherAlerts;
+
+  /// No description provided for @enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// No description provided for @disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// No description provided for @rateApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate App'**
+  String get rateApp;
+
+  /// No description provided for @thankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you!'**
+  String get thankYou;
+
+  /// No description provided for @favoriteCities.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Cities'**
+  String get favoriteCities;
+
+  /// No description provided for @noFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorite cities yet'**
+  String get noFavorites;
+
+  /// No description provided for @searchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTooltip;
+
+  /// No description provided for @deleteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteTooltip;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @noSearchHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No search history yet'**
+  String get noSearchHistory;
+
+  /// No description provided for @recentSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent search'**
+  String get recentSearch;
+
+  /// No description provided for @deleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete All'**
+  String get deleteAll;
+
+  /// No description provided for @addedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {city} to favorites'**
+  String addedToFavorites(String city);
+
+  /// No description provided for @removedFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed {city} from favorites'**
+  String removedFromFavorites(String city);
+
+  /// No description provided for @addFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Favorite'**
+  String get addFavorite;
+
+  /// No description provided for @favorited.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorited'**
+  String get favorited;
 }
 
 class _AppLocalizationsDelegate

@@ -60,6 +60,25 @@ class AppStrings {
   final String favoriteCities;
   final String quickAccess;
   final String weatherTips;
+  
+  // New features section
+  final String favorites;
+  final String cities;
+  final String searchHistory;
+  final String searches;
+  final String weatherAlerts;
+  final String enabled;
+  final String disabled;
+  final String information;
+  final String darkMode;
+  final String noFavorites;
+  final String searchTooltip;
+  final String deleteTooltip;
+  final String noSearchHistory;
+  final String recentSearch;
+  final String deleteAll;
+  final String addFavorite;
+  final String favorited;
 
   // Weather conditions
   final String clearSky;
@@ -141,6 +160,23 @@ class AppStrings {
     required this.favoriteCities,
     required this.quickAccess,
     required this.weatherTips,
+    required this.favorites,
+    required this.cities,
+    required this.searchHistory,
+    required this.searches,
+    required this.weatherAlerts,
+    required this.enabled,
+    required this.disabled,
+    required this.information,
+    required this.darkMode,
+    required this.noFavorites,
+    required this.searchTooltip,
+    required this.deleteTooltip,
+    required this.noSearchHistory,
+    required this.recentSearch,
+    required this.deleteAll,
+    required this.addFavorite,
+    required this.favorited,
     required this.clearSky,
     required this.fewClouds,
     required this.scatteredClouds,
@@ -222,6 +258,23 @@ class AppStrings {
     favoriteCities: '⭐ Thành phố yêu thích',
     quickAccess: 'Truy cập nhanh',
     weatherTips: '💡 Gợi ý thời tiết',
+    favorites: 'Yêu thích',
+    cities: 'thành phố',
+    searchHistory: 'Lịch sử tìm kiếm',
+    searches: 'tìm kiếm',
+    weatherAlerts: 'Cảnh báo thời tiết',
+    enabled: 'Đang bật',
+    disabled: 'Đang tắt',
+    information: 'Thông tin',
+    darkMode: 'Chế độ tối',
+    noFavorites: 'Chưa có thành phố yêu thích',
+    searchTooltip: 'Tìm kiếm',
+    deleteTooltip: 'Xóa',
+    noSearchHistory: 'Chưa có lịch sử tìm kiếm',
+    recentSearch: 'Tìm kiếm gần đây',
+    deleteAll: 'Xóa tất cả',
+    addFavorite: 'Thêm yêu thích',
+    favorited: 'Đã yêu thích',
     clearSky: 'Quang đãng',
     fewClouds: 'Ít mây',
     scatteredClouds: 'Có mây',
@@ -303,6 +356,23 @@ class AppStrings {
     favoriteCities: '⭐ Favorite Cities',
     quickAccess: 'Quick Access',
     weatherTips: '💡 Weather Tips',
+    favorites: 'Favorites',
+    cities: 'cities',
+    searchHistory: 'Search History',
+    searches: 'searches',
+    weatherAlerts: 'Weather Alerts',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    information: 'Information',
+    darkMode: 'Dark Mode',
+    noFavorites: 'No favorite cities yet',
+    searchTooltip: 'Search',
+    deleteTooltip: 'Delete',
+    noSearchHistory: 'No search history yet',
+    recentSearch: 'Recent search',
+    deleteAll: 'Delete All',
+    addFavorite: 'Add Favorite',
+    favorited: 'Favorited',
     clearSky: 'Clear Sky',
     fewClouds: 'Few Clouds',
     scatteredClouds: 'Scattered Clouds',
@@ -318,4 +388,21 @@ class AppStrings {
     featureInDevelopment: 'Feature in development...',
     thankYou: 'Thank you for your interest!',
   );
+  
+  // Methods with parameters (for dynamic messages)
+  String addedToFavorites(String city) {
+    if (this == AppStrings.vi) {
+      return 'Đã thêm $city vào yêu thích';
+    } else {
+      return 'Added $city to favorites';
+    }
+  }
+  
+  String removedFromFavorites(String city) {
+    if (this == AppStrings.vi) {
+      return 'Đã xóa $city khỏi yêu thích';
+    } else {
+      return 'Removed $city from favorites';
+    }
+  }
 }

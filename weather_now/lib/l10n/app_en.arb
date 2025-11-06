@@ -45,5 +45,45 @@
   "thailand": "🇹🇭 Thailand",
   "singapore": "🇸🇬 Singapore",
   "france": "🇫🇷 France",
-  "germany": "🇩🇪 Germany"
+  "germany": "🇩🇪 Germany",
+  "home": "Home",
+  "weatherApp": "Weather Application",
+  "features": "Features",
+  "information": "Information",
+  "favorites": "Favorites",
+  "cities": "cities",
+  "searchHistory": "Search History",
+  "searches": "searches",
+  "weatherAlerts": "Weather Alerts",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "rateApp": "Rate App",
+  "thankYou": "Thank you!",
+  "favoriteCities": "Favorite Cities",
+  "noFavorites": "No favorite cities yet",
+  "searchTooltip": "Search",
+  "deleteTooltip": "Delete",
+  "close": "Close",
+  "cancel": "Cancel",
+  "noSearchHistory": "No search history yet",
+  "recentSearch": "Recent search",
+  "deleteAll": "Delete All",
+  "addedToFavorites": "Added {city} to favorites",
+  "@addedToFavorites": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "removedFromFavorites": "Removed {city} from favorites",
+  "@removedFromFavorites": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "addFavorite": "Add Favorite",
+  "favorited": "Favorited"
 }

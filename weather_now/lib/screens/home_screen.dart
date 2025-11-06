@@ -1312,7 +1312,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Đã xóa $cityName khỏi yêu thích',
+                                          strings.removedFromFavorites(cityName),
                                         ),
                                         backgroundColor: Colors.orange,
                                         behavior: SnackBarBehavior.floating,
@@ -1323,7 +1323,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Đã thêm $cityName vào yêu thích',
+                                          strings.addedToFavorites(cityName),
                                         ),
                                         backgroundColor: Colors.green,
                                         behavior: SnackBarBehavior.floating,
@@ -1382,8 +1382,8 @@ class _HomeScreenState extends State<HomeScreen>
                                       _favoriteCities.contains(
                                             provider.current!.city,
                                           )
-                                          ? 'Đã yêu thích'
-                                          : 'Thêm yêu thích',
+                                          ? strings.favorited
+                                          : strings.addFavorite,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
@@ -1590,7 +1590,7 @@ class _HomeScreenState extends State<HomeScreen>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              '⚡ Tính năng',
+              '⚡ ${strings.features}',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w800,
@@ -1601,8 +1601,8 @@ class _HomeScreenState extends State<HomeScreen>
           _buildDrawerItem(
             context,
             icon: Icons.favorite_rounded,
-            title: 'Yêu thích',
-            subtitle: '${_favoriteCities.length} thành phố',
+            title: strings.favorites,
+            subtitle: '${_favoriteCities.length} ${strings.cities}',
             gradient: [Colors.pink, Colors.pinkAccent],
             onTap: () {
               Navigator.pop(context);
@@ -1613,8 +1613,8 @@ class _HomeScreenState extends State<HomeScreen>
           _buildDrawerItem(
             context,
             icon: Icons.history_rounded,
-            title: 'Lịch sử tìm kiếm',
-            subtitle: '${_searchHistory.length} tìm kiếm',
+            title: strings.searchHistory,
+            subtitle: '${_searchHistory.length} ${strings.searches}',
             gradient: [Colors.purple, Colors.purpleAccent],
             onTap: () {
               Navigator.pop(context);
@@ -1622,23 +1622,23 @@ class _HomeScreenState extends State<HomeScreen>
             },
           ),
 
-          _buildDrawerItem(
-            context,
-            icon: Icons.compare_arrows_rounded,
-            title: 'So sánh thời tiết',
-            subtitle: '${_compareList.length}/2 thành phố',
-            gradient: [Colors.blue, Colors.lightBlueAccent],
-            onTap: () {
-              Navigator.pop(context);
-              _showCompareWeatherDialog(context);
-            },
-          ),
+          // _buildDrawerItem(
+          //   context,
+          //   icon: Icons.compare_arrows_rounded,
+          //   title: 'So sánh thời tiết',
+          //   subtitle: '${_compareList.length}/2 thành phố',
+          //   gradient: [Colors.blue, Colors.lightBlueAccent],
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     _showCompareWeatherDialog(context);
+          //   },
+          // ),
 
           _buildDrawerItem(
             context,
             icon: Icons.notifications_active_rounded,
-            title: 'Cảnh báo thời tiết',
-            subtitle: _alertsEnabled ? 'Đang bật' : 'Đang tắt',
+            title: strings.weatherAlerts,
+            subtitle: _alertsEnabled ? strings.enabled : strings.disabled,
             gradient: [Colors.orange, Colors.deepOrangeAccent],
             onTap: () {
               Navigator.pop(context);
@@ -1653,7 +1653,7 @@ class _HomeScreenState extends State<HomeScreen>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              'ℹ️ Thông tin',
+              'ℹ️ ${strings.information}',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w800,
@@ -1693,7 +1693,7 @@ class _HomeScreenState extends State<HomeScreen>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              '⚙️ Cài đặt',
+              '⚙️ ${strings.settings}',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w800,
@@ -1728,7 +1728,7 @@ class _HomeScreenState extends State<HomeScreen>
               Icons.dark_mode_rounded,
               color: theme.colorScheme.primary,
             ),
-            title: const Text('Chế độ tối'),
+            title: Text(strings.darkMode),
             subtitle: const Text('Dark mode'),
             trailing: Switch(
               value: Theme.of(context).brightness == Brightness.dark,
@@ -1893,6 +1893,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _showFavoritesDialog(BuildContext parentContext) {
     final theme = Theme.of(parentContext);
+    final strings = S.of(parentContext);
 
     showDialog(
       context: parentContext,
@@ -1915,26 +1916,26 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               const SizedBox(width: 12),
-              const Text('⭐ Thành phố yêu thích'),
+              Text('⭐ ${strings.favoriteCities}'),
             ],
           ),
           content: SizedBox(
             width: double.maxFinite,
             child: _favoriteCities.isEmpty
-                ? const Padding(
-                    padding: EdgeInsets.all(32.0),
+                ? Padding(
+                    padding: const EdgeInsets.all(32.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.favorite_border_rounded,
                           size: 64,
                           color: Colors.grey,
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
-                          'Chưa có thành phố yêu thích',
-                          style: TextStyle(color: Colors.grey),
+                          strings.noFavorites,
+                          style: const TextStyle(color: Colors.grey),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -1974,7 +1975,7 @@ class _HomeScreenState extends State<HomeScreen>
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.search_rounded),
-                                tooltip: 'Tìm kiếm',
+                                tooltip: strings.searchTooltip,
                                 onPressed: () {
                                   Navigator.pop(dialogContext);
                                   setState(() {
@@ -1995,7 +1996,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   Icons.delete_rounded,
                                   color: Colors.red,
                                 ),
-                                tooltip: 'Xóa',
+                                tooltip: strings.deleteTooltip,
                                 onPressed: () {
                                   setState(() {
                                     _favoriteCities.removeAt(index);
@@ -2007,7 +2008,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   ).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Đã xóa $city khỏi yêu thích',
+                                        strings.removedFromFavorites(city),
                                       ),
                                       backgroundColor: Colors.orange,
                                       behavior: SnackBarBehavior.floating,
@@ -2025,7 +2026,7 @@ class _HomeScreenState extends State<HomeScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Đóng'),
+              child: Text(strings.close),
             ),
           ],
         ),
@@ -2035,6 +2036,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _showSearchHistoryDialog(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = S.of(context);
 
     showDialog(
       context: context,
@@ -2056,7 +2058,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
             const SizedBox(width: 12),
-            const Text('🕐 Lịch sử tìm kiếm'),
+            Text('🕐 ${strings.searchHistory}'),
           ],
         ),
         content: SizedBox(
@@ -2074,7 +2076,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Chưa có lịch sử tìm kiếm',
+                        strings.noSearchHistory,
                         style: TextStyle(
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
                           fontSize: 16,
@@ -2124,7 +2126,7 @@ class _HomeScreenState extends State<HomeScreen>
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         subtitle: Text(
-                          'Tìm kiếm gần đây',
+                          strings.recentSearch,
                           style: TextStyle(
                             fontSize: 12,
                             color: theme.colorScheme.secondary,
@@ -2160,12 +2162,12 @@ class _HomeScreenState extends State<HomeScreen>
                 Navigator.pop(dialogContext);
               },
               icon: const Icon(Icons.delete_outline_rounded),
-              label: const Text('Xóa tất cả'),
+              label: Text(strings.deleteAll),
               style: TextButton.styleFrom(foregroundColor: Colors.red),
             ),
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Đóng'),
+            child: Text(strings.close),
           ),
         ],
       ),

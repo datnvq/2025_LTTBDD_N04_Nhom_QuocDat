@@ -149,4 +149,86 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get germany => '🇩🇪 Germany';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get weatherApp => 'Weather Application';
+
+  @override
+  String get features => 'Features';
+
+  @override
+  String get information => 'Information';
+
+  @override
+  String get favorites => 'Favorites';
+
+  @override
+  String get cities => 'cities';
+
+  @override
+  String get searchHistory => 'Search History';
+
+  @override
+  String get searches => 'searches';
+
+  @override
+  String get weatherAlerts => 'Weather Alerts';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get rateApp => 'Rate App';
+
+  @override
+  String get thankYou => 'Thank you!';
+
+  @override
+  String get favoriteCities => 'Favorite Cities';
+
+  @override
+  String get noFavorites => 'No favorite cities yet';
+
+  @override
+  String get searchTooltip => 'Search';
+
+  @override
+  String get deleteTooltip => 'Delete';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get noSearchHistory => 'No search history yet';
+
+  @override
+  String get recentSearch => 'Recent search';
+
+  @override
+  String get deleteAll => 'Delete All';
+
+  @override
+  String addedToFavorites(String city) {
+    return 'Added $city to favorites';
+  }
+
+  @override
+  String removedFromFavorites(String city) {
+    return 'Removed $city from favorites';
+  }
+
+  @override
+  String get addFavorite => 'Add Favorite';
+
+  @override
+  String get favorited => 'Favorited';
 }
