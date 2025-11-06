@@ -60,7 +60,7 @@ class AppStrings {
   final String favoriteCities;
   final String quickAccess;
   final String weatherTips;
-  
+
   // Weather conditions
   final String clearSky;
   final String fewClouds;
@@ -169,7 +169,8 @@ class AppStrings {
     location: 'Vị trí',
     loading: 'Đang tải dữ liệu thời tiết...',
     welcome: 'Chào mừng đến Weather Now!',
-    welcomeMessage: 'Tìm kiếm thành phố hoặc sử dụng\nvị trí hiện tại để xem thời tiết',
+    welcomeMessage:
+        'Tìm kiếm thành phố hoặc sử dụng\nvị trí hiện tại để xem thời tiết',
     popularCities: 'Thành Phố Phổ Biến',
     humidity: 'Độ ẩm',
     wind: 'Gió',
@@ -190,7 +191,8 @@ class AppStrings {
     className: 'Lớp: LTTBDD N04',
     year: 'Năm: 2025',
     members: '👨‍💻 Thành viên:',
-    appDescription: 'Weather Now cung cấp thông tin thời tiết chính xác và cập nhật cho hơn 200,000 thành phố trên toàn thế giới.',
+    appDescription:
+        'Weather Now cung cấp thông tin thời tiết chính xác và cập nhật cho hơn 200,000 thành phố trên toàn thế giới.',
     features: '✨ Tính năng nổi bật:',
     copyright: '© 2025 Nhóm NguyenVoQuocDat - LTTBDD N04',
     selectCity: 'Chọn thành phố',
@@ -248,7 +250,8 @@ class AppStrings {
     location: 'Location',
     loading: 'Loading weather data...',
     welcome: 'Welcome to Weather Now!',
-    welcomeMessage: 'Search for a city or use\nyour current location to view weather',
+    welcomeMessage:
+        'Search for a city or use\nyour current location to view weather',
     popularCities: 'Popular Cities',
     humidity: 'Humidity',
     wind: 'Wind',
@@ -269,7 +272,8 @@ class AppStrings {
     className: 'Class: LTTBDD N04',
     year: 'Year: 2025',
     members: '👨‍💻 Members:',
-    appDescription: 'Weather Now provides accurate and up-to-date weather information for over 200,000 cities worldwide.',
+    appDescription:
+        'Weather Now provides accurate and up-to-date weather information for over 200,000 cities worldwide.',
     features: '✨ Key Features:',
     copyright: '© 2025 Team NguyenVoQuocDat - LTTBDD N04',
     selectCity: 'Select City',

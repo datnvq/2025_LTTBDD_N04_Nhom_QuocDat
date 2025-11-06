@@ -17,22 +17,24 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final _controller = TextEditingController(text: 'Ho Chi Minh');
   String _selectedCountry = 'VN';
   String? _selectedCity;
-  final List<String> _favoriteCities = ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']; // Danh sách yêu thích
+  List<String> _favoriteCities = []; // Danh sách yêu thích (có thể thay đổi)
   List<String> _searchHistory = []; // Lịch sử tìm kiếm
   List<String> _compareList = []; // Danh sách thành phố để so sánh (max 2)
-  Map<String, Weather?> _compareWeatherData = {}; // Dữ liệu thời tiết cho so sánh
-  
+  Map<String, Weather?> _compareWeatherData =
+      {}; // Dữ liệu thời tiết cho so sánh
+
   // Weather alerts settings
   bool _alertsEnabled = false;
   double _maxTempAlert = 35.0;
   double _minTempAlert = 10.0;
   double _maxHumidityAlert = 90.0;
   double _maxWindAlert = 15.0;
-  
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -468,6 +470,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.initState();
     // Set giá trị ban đầu cho city dropdown
     _selectedCity = _allCities[_selectedCountry]?.first;
+    // Load favorite cities
+    _loadFavoriteCities();
     // Load search history
     _loadSearchHistory();
     // Load alert settings
@@ -540,7 +544,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   builder: (context) => Container(
                     margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer.withOpacity(0.8),
+                      color: theme.colorScheme.primaryContainer.withOpacity(
+                        0.8,
+                      ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
@@ -572,7 +578,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                         ],
                       ),
-                      child: const Icon(Icons.wb_sunny_rounded, color: Colors.white, size: 24),
+                      child: const Icon(
+                        Icons.wb_sunny_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Text(
@@ -582,12 +592,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         fontSize: 22,
                         letterSpacing: 0.5,
                         foreground: Paint()
-                          ..shader = LinearGradient(
-                            colors: [
-                              theme.colorScheme.primary,
-                              theme.colorScheme.secondary,
-                            ],
-                          ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                          ..shader =
+                              LinearGradient(
+                                colors: [
+                                  theme.colorScheme.primary,
+                                  theme.colorScheme.secondary,
+                                ],
+                              ).createShader(
+                                const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+                              ),
                       ),
                     ),
                   ],
@@ -596,16 +609,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Container(
                     margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.secondaryContainer.withOpacity(0.8),
+                      color: theme.colorScheme.secondaryContainer.withOpacity(
+                        0.8,
+                      ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
                       icon: const Icon(Icons.refresh_rounded),
-                      onPressed: provider.isLoading ? null : () {
-                        if (_controller.text.isNotEmpty) {
-                          _searchCity(provider);
-                        }
-                      },
+                      onPressed: provider.isLoading
+                          ? null
+                          : () {
+                              if (_controller.text.isNotEmpty) {
+                                _searchCity(provider);
+                              }
+                            },
                       tooltip: 'Refresh',
                       color: theme.colorScheme.onSecondaryContainer,
                     ),
@@ -626,7 +643,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           end: Alignment.bottomRight,
                           colors: [
                             theme.colorScheme.primaryContainer.withOpacity(0.3),
-                            theme.colorScheme.secondaryContainer.withOpacity(0.2),
+                            theme.colorScheme.secondaryContainer.withOpacity(
+                              0.2,
+                            ),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(28),
@@ -667,7 +686,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       borderRadius: BorderRadius.circular(16),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: theme.colorScheme.primary.withOpacity(0.4),
+                                          color: theme.colorScheme.primary
+                                              .withOpacity(0.4),
                                           blurRadius: 12,
                                           offset: const Offset(0, 4),
                                         ),
@@ -682,22 +702,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   const SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           strings.searchWeather,
-                                          style: theme.textTheme.headlineSmall?.copyWith(
-                                            fontWeight: FontWeight.w900,
-                                            color: theme.colorScheme.onSurface,
-                                            letterSpacing: 0.5,
-                                          ),
+                                          style: theme.textTheme.headlineSmall
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w900,
+                                                color:
+                                                    theme.colorScheme.onSurface,
+                                                letterSpacing: 0.5,
+                                              ),
                                         ),
                                         Text(
                                           'Khám phá thời tiết toàn cầu',
-                                          style: theme.textTheme.bodySmall?.copyWith(
-                                            color: theme.colorScheme.onSurfaceVariant,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                                color: theme
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                         ),
                                       ],
                                     ),
@@ -708,166 +734,233 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                               // Country Selector
                               Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surfaceContainerHigh,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: theme.colorScheme.outline.withOpacity(0.3),
-                                  width: 1,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 4,
                                 ),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: _selectedCountry,
-                                  isExpanded: true,
-                                  icon: Icon(Icons.expand_more_rounded, color: theme.colorScheme.onSurfaceVariant),
-                                  hint: Text(strings.selectCountry),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.surfaceContainerHigh,
                                   borderRadius: BorderRadius.circular(16),
-                                  items: _countries.entries.map((entry) {
-                                    return DropdownMenuItem(
-                                      value: entry.key,
-                                      child: Row(
-                                        children: [
-                                          Text(entry.value, style: const TextStyle(fontSize: 16)),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedCountry = value!;
-                                      // Reset city selection khi đổi quốc gia
-                                      _selectedCity = null;
-                                      // Set thành phố đầu tiên của quốc gia được chọn
-                                      final cities = _allCities[_selectedCountry];
-                                      if (cities != null && cities.isNotEmpty) {
-                                        _selectedCity = cities.first;
-                                        _controller.text = cities.first;
-                                      }
-                                    });
-                                  },
+                                  border: Border.all(
+                                    color: theme.colorScheme.outline
+                                        .withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: _selectedCountry,
+                                    isExpanded: true,
+                                    icon: Icon(
+                                      Icons.expand_more_rounded,
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                    hint: Text(strings.selectCountry),
+                                    borderRadius: BorderRadius.circular(16),
+                                    items: _countries.entries.map((entry) {
+                                      return DropdownMenuItem(
+                                        value: entry.key,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              entry.value,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedCountry = value!;
+                                        // Reset city selection khi đổi quốc gia
+                                        _selectedCity = null;
+                                        // Set thành phố đầu tiên của quốc gia được chọn
+                                        final cities =
+                                            _allCities[_selectedCountry];
+                                        if (cities != null &&
+                                            cities.isNotEmpty) {
+                                          _selectedCity = cities.first;
+                                          _controller.text = cities.first;
+                                        }
+                                      });
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
+                              const SizedBox(height: 16),
 
                               // City Dropdown Selector
                               Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surfaceContainerHigh,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: theme.colorScheme.outline.withOpacity(0.3),
-                                  width: 1,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 4,
                                 ),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: _selectedCity,
-                                  isExpanded: true,
-                                  icon: Icon(Icons.expand_more_rounded, color: theme.colorScheme.onSurfaceVariant),
-                                  hint: Text(strings.selectCity),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.surfaceContainerHigh,
                                   borderRadius: BorderRadius.circular(16),
-                                  items: _allCities[_selectedCountry]?.map((city) {
-                                    return DropdownMenuItem(
-                                      value: city,
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_city, size: 18, color: theme.colorScheme.primary),
-                                          const SizedBox(width: 8),
-                                          Text(city, style: const TextStyle(fontSize: 16)),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedCity = value;
-                                      if (value != null) {
-                                        _controller.text = value;
-                                      }
-                                    });
-                                  },
+                                  border: Border.all(
+                                    color: theme.colorScheme.outline
+                                        .withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: _selectedCity,
+                                    isExpanded: true,
+                                    icon: Icon(
+                                      Icons.expand_more_rounded,
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                    hint: Text(strings.selectCity),
+                                    borderRadius: BorderRadius.circular(16),
+                                    items: _allCities[_selectedCountry]?.map((
+                                      city,
+                                    ) {
+                                      return DropdownMenuItem(
+                                        value: city,
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_city,
+                                              size: 18,
+                                              color: theme.colorScheme.primary,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              city,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedCity = value;
+                                        if (value != null) {
+                                          _controller.text = value;
+                                        }
+                                      });
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
+                              const SizedBox(height: 16),
 
                               // City Input (có thể nhập tay)
                               TextField(
-                              controller: _controller,
-                              style: const TextStyle(fontSize: 16),
-                              decoration: InputDecoration(
-                                labelText: strings.orEnterCity,
-                                hintText: strings.enterCityName,
-                                prefixIcon: Icon(Icons.edit_location_alt_rounded, color: theme.colorScheme.primary),
-                                suffixIcon: _controller.text.isNotEmpty
-                                    ? IconButton(
-                                        icon: const Icon(Icons.clear_rounded),
-                                        onPressed: () {
-                                          setState(() {
-                                            _controller.clear();
-                                            _selectedCity = null;
-                                          });
-                                        },
-                                      )
-                                    : null,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.3)),
+                                controller: _controller,
+                                style: const TextStyle(fontSize: 16),
+                                decoration: InputDecoration(
+                                  labelText: strings.orEnterCity,
+                                  hintText: strings.enterCityName,
+                                  prefixIcon: Icon(
+                                    Icons.edit_location_alt_rounded,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                  suffixIcon: _controller.text.isNotEmpty
+                                      ? IconButton(
+                                          icon: const Icon(Icons.clear_rounded),
+                                          onPressed: () {
+                                            setState(() {
+                                              _controller.clear();
+                                              _selectedCity = null;
+                                            });
+                                          },
+                                        )
+                                      : null,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                      color: theme.colorScheme.outline
+                                          .withOpacity(0.3),
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                      color: theme.colorScheme.outline
+                                          .withOpacity(0.3),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                      color: theme.colorScheme.primary,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  fillColor:
+                                      theme.colorScheme.surfaceContainerHigh,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 16,
+                                  ),
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.3)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
-                                ),
-                                filled: true,
-                                fillColor: theme.colorScheme.surfaceContainerHigh,
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                onSubmitted: (_) => _searchCity(provider),
+                                onChanged: (value) {
+                                  // Sync với dropdown nếu trùng
+                                  setState(() {
+                                    if (_allCities[_selectedCountry]?.contains(
+                                          value,
+                                        ) ??
+                                        false) {
+                                      _selectedCity = value;
+                                    }
+                                  });
+                                },
                               ),
-                              onSubmitted: (_) => _searchCity(provider),
-                              onChanged: (value) {
-                                // Sync với dropdown nếu trùng
-                                setState(() {
-                                  if (_allCities[_selectedCountry]?.contains(value) ?? false) {
-                                    _selectedCity = value;
-                                  }
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
+                              const SizedBox(height: 20),
 
                               // Popular Cities Chips (Thành phố nổi bật)
                               if (_popularCities[_selectedCountry] != null)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    strings.popularCities,
-                                    style: theme.textTheme.titleSmall?.copyWith(
-                                      color: theme.colorScheme.onSurface,
-                                      fontWeight: FontWeight.bold,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      strings.popularCities,
+                                      style: theme.textTheme.titleSmall
+                                          ?.copyWith(
+                                            color: theme.colorScheme.onSurface,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Wrap(
-                                    spacing: 10,
-                                    runSpacing: 10,
-                                    children: _popularCities[_selectedCountry]!
-                                        .map((city) => FilterChip(
-                                              label: Text(city, style: const TextStyle(fontSize: 13)),
-                                              avatar: Icon(Icons.location_on_rounded, size: 18, 
-                                                color: _selectedCity == city 
-                                                  ? theme.colorScheme.onPrimary 
-                                                  : theme.colorScheme.primary),
+                                    const SizedBox(height: 12),
+                                    Wrap(
+                                      spacing: 10,
+                                      runSpacing: 10,
+                                      children: _popularCities[_selectedCountry]!
+                                          .map(
+                                            (city) => FilterChip(
+                                              label: Text(
+                                                city,
+                                                style: const TextStyle(
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              avatar: Icon(
+                                                Icons.location_on_rounded,
+                                                size: 18,
+                                                color: _selectedCity == city
+                                                    ? theme
+                                                          .colorScheme
+                                                          .onPrimary
+                                                    : theme.colorScheme.primary,
+                                              ),
                                               selected: _selectedCity == city,
-                                              selectedColor: theme.colorScheme.primaryContainer,
-                                              backgroundColor: theme.colorScheme.surfaceContainerHigh,
+                                              selectedColor: theme
+                                                  .colorScheme
+                                                  .primaryContainer,
+                                              backgroundColor: theme
+                                                  .colorScheme
+                                                  .surfaceContainerHigh,
                                               onSelected: (selected) {
                                                 setState(() {
                                                   _selectedCity = city;
@@ -876,109 +969,135 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                 _searchCity(provider);
                                                 _saveSearchHistory(city);
                                               },
-                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 12,
+                                                    vertical: 8,
+                                                  ),
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
-                                            ))
-                                        .toList(),
-                                  ),
-                                ],
-                              ),
-                            const SizedBox(height: 24),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                              const SizedBox(height: 24),
 
                               // Action Buttons
                               Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          theme.colorScheme.primary,
-                                          theme.colorScheme.secondary,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            theme.colorScheme.primary,
+                                            theme.colorScheme.secondary,
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: theme.colorScheme.primary
+                                                .withOpacity(0.4),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 6),
+                                          ),
                                         ],
                                       ),
-                                      borderRadius: BorderRadius.circular(20),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: theme.colorScheme.primary.withOpacity(0.4),
-                                          blurRadius: 12,
-                                          offset: const Offset(0, 6),
-                                        ),
-                                      ],
-                                    ),
-                                    child: ElevatedButton.icon(
-                                      onPressed: provider.isLoading
-                                          ? null
-                                          : () => _searchCity(provider),
-                                      icon: const Icon(Icons.search_rounded, size: 24, color: Colors.white),
-                                      label: Text(
-                                        strings.search,
-                                        style: const TextStyle(
-                                          fontSize: 17, 
-                                          fontWeight: FontWeight.w700,
+                                      child: ElevatedButton.icon(
+                                        onPressed: provider.isLoading
+                                            ? null
+                                            : () => _searchCity(provider),
+                                        icon: const Icon(
+                                          Icons.search_rounded,
+                                          size: 24,
                                           color: Colors.white,
-                                          letterSpacing: 0.5,
                                         ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.transparent,
-                                        shadowColor: Colors.transparent,
-                                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                        label: Text(
+                                          strings.search,
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.transparent,
+                                          shadowColor: Colors.transparent,
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 20,
+                                            horizontal: 24,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          theme.colorScheme.tertiary,
-                                          theme.colorScheme.tertiaryContainer,
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            theme.colorScheme.tertiary,
+                                            theme.colorScheme.tertiaryContainer,
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: theme.colorScheme.tertiary
+                                                .withOpacity(0.3),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 6),
+                                          ),
                                         ],
                                       ),
-                                      borderRadius: BorderRadius.circular(20),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: theme.colorScheme.tertiary.withOpacity(0.3),
-                                          blurRadius: 12,
-                                          offset: const Offset(0, 6),
-                                        ),
-                                      ],
-                                    ),
-                                    child: ElevatedButton.icon(
-                                      onPressed: provider.isLoading
-                                          ? null
-                                          : provider.loadByCurrentLocation,
-                                      icon: const Icon(Icons.my_location_rounded, size: 22, color: Colors.white),
-                                      label: Text(
-                                        strings.location,
-                                        style: const TextStyle(
-                                          fontSize: 15, 
-                                          fontWeight: FontWeight.w700,
+                                      child: ElevatedButton.icon(
+                                        onPressed: provider.isLoading
+                                            ? null
+                                            : provider.loadByCurrentLocation,
+                                        icon: const Icon(
+                                          Icons.my_location_rounded,
+                                          size: 22,
                                           color: Colors.white,
                                         ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.transparent,
-                                        shadowColor: Colors.transparent,
-                                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                        label: Text(
+                                          strings.location,
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.transparent,
+                                          shadowColor: Colors.transparent,
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 20,
+                                            horizontal: 16,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -988,20 +1107,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     const SizedBox(height: 20),
 
                     // Favorites Cities Section
-                    if (!provider.isLoading && provider.current == null && provider.error == null)
+                    if (!provider.isLoading &&
+                        provider.current == null &&
+                        provider.error == null)
                       FadeTransition(
                         opacity: _fadeAnimation,
                         child: Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                theme.colorScheme.tertiaryContainer.withOpacity(0.3),
-                                theme.colorScheme.surfaceContainerHighest.withOpacity(0.2),
+                                theme.colorScheme.tertiaryContainer.withOpacity(
+                                  0.3,
+                                ),
+                                theme.colorScheme.surfaceContainerHighest
+                                    .withOpacity(0.2),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(24),
                             border: Border.all(
-                              color: theme.colorScheme.tertiary.withOpacity(0.3),
+                              color: theme.colorScheme.tertiary.withOpacity(
+                                0.3,
+                              ),
                               width: 1.5,
                             ),
                           ),
@@ -1023,21 +1149,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: theme.colorScheme.tertiary.withOpacity(0.3),
+                                          color: theme.colorScheme.tertiary
+                                              .withOpacity(0.3),
                                           blurRadius: 8,
                                           offset: const Offset(0, 3),
                                         ),
                                       ],
                                     ),
-                                    child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 20),
+                                    child: const Icon(
+                                      Icons.favorite_rounded,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
                                     strings.favoriteCities,
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      color: theme.colorScheme.onSurface,
-                                    ),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -1057,18 +1189,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     },
                                     borderRadius: BorderRadius.circular(16),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
                                             theme.colorScheme.primaryContainer,
-                                            theme.colorScheme.secondaryContainer,
+                                            theme
+                                                .colorScheme
+                                                .secondaryContainer,
                                           ],
                                         ),
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: theme.colorScheme.primary.withOpacity(0.2),
+                                            color: theme.colorScheme.primary
+                                                .withOpacity(0.2),
                                             blurRadius: 8,
                                             offset: const Offset(0, 3),
                                           ),
@@ -1087,7 +1225,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                             city,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              color: theme.colorScheme.onPrimaryContainer,
+                                              color: theme
+                                                  .colorScheme
+                                                  .onPrimaryContainer,
                                               fontSize: 14,
                                             ),
                                           ),
@@ -1105,8 +1245,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     const SizedBox(height: 20),
 
                     // Loading Indicator with Skeleton
-                    if (provider.isLoading)
-                      const WeatherSkeleton(),
+                    if (provider.isLoading) const WeatherSkeleton(),
 
                     // Error Message
                     if (provider.error != null)
@@ -1123,7 +1262,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.error.withOpacity(0.2),
+                                  color: theme.colorScheme.error.withOpacity(
+                                    0.2,
+                                  ),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
@@ -1151,6 +1292,111 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     // Weather Card
                     if (provider.current != null) ...[
                       WeatherCard(data: provider.current!),
+
+                      // Favorite Button
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Center(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                final cityName = provider.current!.city;
+                                setState(() {
+                                  if (_favoriteCities.contains(cityName)) {
+                                    _favoriteCities.remove(cityName);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Đã xóa $cityName khỏi yêu thích',
+                                        ),
+                                        backgroundColor: Colors.orange,
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  } else {
+                                    _favoriteCities.add(cityName);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Đã thêm $cityName vào yêu thích',
+                                        ),
+                                        backgroundColor: Colors.green,
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  }
+                                  _saveFavoriteCities();
+                                });
+                              },
+                              borderRadius: BorderRadius.circular(50),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors:
+                                        _favoriteCities.contains(
+                                          provider.current!.city,
+                                        )
+                                        ? [Colors.pink, Colors.pinkAccent]
+                                        : [
+                                            Colors.grey.shade300,
+                                            Colors.grey.shade400,
+                                          ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          _favoriteCities.contains(
+                                            provider.current!.city,
+                                          )
+                                          ? Colors.pink.withOpacity(0.3)
+                                          : Colors.grey.withOpacity(0.2),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      _favoriteCities.contains(
+                                            provider.current!.city,
+                                          )
+                                          ? Icons.favorite_rounded
+                                          : Icons.favorite_border_rounded,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _favoriteCities.contains(
+                                            provider.current!.city,
+                                          )
+                                          ? 'Đã yêu thích'
+                                          : 'Thêm yêu thích',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
                       // Check for weather alerts after widget is built
                       Builder(
                         builder: (context) {
@@ -1171,10 +1417,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
                           side: BorderSide(
-                            color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+                            color: theme.colorScheme.outlineVariant.withOpacity(
+                              0.5,
+                            ),
                           ),
                         ),
-                        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                        color: theme.colorScheme.surfaceContainerHighest
+                            .withOpacity(0.5),
                         child: Padding(
                           padding: const EdgeInsets.all(40.0),
                           child: Column(
@@ -1182,7 +1431,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               Container(
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                                  color: theme.colorScheme.primaryContainer
+                                      .withOpacity(0.5),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
@@ -1204,7 +1454,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               Text(
                                 strings.welcomeMessage,
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.6),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -1236,7 +1487,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget _buildDrawer(BuildContext context) {
     final theme = Theme.of(context);
     final strings = S.of(context);
-    
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -1308,11 +1559,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.secondary,
+                    ],
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.home_rounded, color: Colors.white, size: 20),
+                child: const Icon(
+                  Icons.home_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
               title: Text(
                 strings.home,
@@ -1403,7 +1661,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
 
           ListTile(
-            leading: Icon(Icons.group_rounded, color: theme.colorScheme.primary),
+            leading: Icon(
+              Icons.group_rounded,
+              color: theme.colorScheme.primary,
+            ),
             title: Text(strings.developer),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () {
@@ -1413,7 +1674,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
 
           ListTile(
-            leading: Icon(Icons.info_outline_rounded, color: theme.colorScheme.primary),
+            leading: Icon(
+              Icons.info_outline_rounded,
+              color: theme.colorScheme.primary,
+            ),
             title: Text(strings.about),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () {
@@ -1437,13 +1701,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
 
           ListTile(
-            leading: Icon(Icons.language_rounded, color: theme.colorScheme.primary),
+            leading: Icon(
+              Icons.language_rounded,
+              color: theme.colorScheme.primary,
+            ),
             title: Text(strings.language),
             subtitle: Text(
-              Provider.of<LocaleProvider>(context).locale.languageCode == 'vi' 
-                ? strings.vietnamese 
-                : strings.english,
-              style: TextStyle(color: theme.colorScheme.secondary, fontWeight: FontWeight.w500),
+              Provider.of<LocaleProvider>(context).locale.languageCode == 'vi'
+                  ? strings.vietnamese
+                  : strings.english,
+              style: TextStyle(
+                color: theme.colorScheme.secondary,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () {
@@ -1453,7 +1723,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
 
           ListTile(
-            leading: Icon(Icons.dark_mode_rounded, color: theme.colorScheme.primary),
+            leading: Icon(
+              Icons.dark_mode_rounded,
+              color: theme.colorScheme.primary,
+            ),
             title: const Text('Chế độ tối'),
             subtitle: const Text('Dark mode'),
             trailing: Switch(
@@ -1473,9 +1746,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(strings.thankYou)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(strings.thankYou)));
             },
           ),
 
@@ -1497,6 +1770,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
+  // Load favorite cities from SharedPreferences
+  Future<void> _loadFavoriteCities() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favorites = prefs.getStringList('favorite_cities') ?? [];
+    setState(() {
+      _favoriteCities = favorites.isEmpty
+          ? ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng'] // Default cities
+          : favorites;
+    });
+  }
+
+  // Save favorite cities to SharedPreferences
+  Future<void> _saveFavoriteCities() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('favorite_cities', _favoriteCities);
+    setState(() {});
+  }
+
   // Load search history from SharedPreferences
   Future<void> _loadSearchHistory() async {
     final prefs = await SharedPreferences.getInstance();
@@ -1509,7 +1800,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   // Save search history to SharedPreferences
   Future<void> _saveSearchHistory(String city) async {
     if (city.trim().isEmpty) return;
-    
+
     // Remove if already exists (to move to top)
     _searchHistory.remove(city);
     // Add to the beginning
@@ -1518,7 +1809,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     if (_searchHistory.length > 10) {
       _searchHistory = _searchHistory.sublist(0, 10);
     }
-    
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('search_history', _searchHistory);
     setState(() {});
@@ -1548,9 +1839,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withOpacity(0.2),
-        ),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.2)),
       ),
       child: ListTile(
         leading: Container(
@@ -1568,10 +1857,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
           child: Icon(icon, color: Colors.white, size: 20),
         ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: subtitle != null
             ? Text(
                 subtitle,
@@ -1587,86 +1873,151 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  void _showFavoritesDialog(BuildContext context) {
-    final theme = Theme.of(context);
-    
+  void _showFavoritesDialog(BuildContext parentContext) {
+    final theme = Theme.of(parentContext);
+
     showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.pink, Colors.pinkAccent],
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 20),
-            ),
-            const SizedBox(width: 12),
-            const Text('⭐ Thành phố yêu thích'),
-          ],
-        ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _favoriteCities.length,
-            itemBuilder: (context, index) {
-              final city = _favoriteCities[index];
-              return Container(
-                margin: const EdgeInsets.only(bottom: 8),
+      context: parentContext,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      theme.colorScheme.primaryContainer.withOpacity(0.3),
-                      theme.colorScheme.secondaryContainer.withOpacity(0.3),
-                    ],
+                  gradient: const LinearGradient(
+                    colors: [Colors.pink, Colors.pinkAccent],
                   ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.primary.withOpacity(0.3),
-                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: ListTile(
-                  leading: const Icon(Icons.location_city_rounded),
-                  title: Text(
-                    city,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.search_rounded),
-                    onPressed: () {
-                      Navigator.pop(dialogContext);
-                      setState(() {
-                        _controller.text = city;
-                      });
-                      // Tự động tìm kiếm
-                      final weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
-                      weatherProvider.loadByCity(city);
-                      _saveSearchHistory(city);
+                child: const Icon(
+                  Icons.favorite_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text('⭐ Thành phố yêu thích'),
+            ],
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: _favoriteCities.isEmpty
+                ? const Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.favorite_border_rounded,
+                          size: 64,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Chưa có thành phố yêu thích',
+                          style: TextStyle(color: Colors.grey),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _favoriteCities.length,
+                    itemBuilder: (context, index) {
+                      final city = _favoriteCities[index];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              theme.colorScheme.primaryContainer.withOpacity(
+                                0.3,
+                              ),
+                              theme.colorScheme.secondaryContainer.withOpacity(
+                                0.3,
+                              ),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: theme.colorScheme.primary.withOpacity(0.3),
+                          ),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.location_city_rounded),
+                          title: Text(
+                            city,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.search_rounded),
+                                tooltip: 'Tìm kiếm',
+                                onPressed: () {
+                                  Navigator.pop(dialogContext);
+                                  setState(() {
+                                    _controller.text = city;
+                                  });
+                                  // Tự động tìm kiếm
+                                  final weatherProvider =
+                                      Provider.of<WeatherProvider>(
+                                        parentContext,
+                                        listen: false,
+                                      );
+                                  weatherProvider.loadByCity(city);
+                                  _saveSearchHistory(city);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete_rounded,
+                                  color: Colors.red,
+                                ),
+                                tooltip: 'Xóa',
+                                onPressed: () {
+                                  setState(() {
+                                    _favoriteCities.removeAt(index);
+                                  });
+                                  _saveFavoriteCities();
+                                  setDialogState(() {});
+                                  ScaffoldMessenger.of(
+                                    parentContext,
+                                  ).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Đã xóa $city khỏi yêu thích',
+                                      ),
+                                      backgroundColor: Colors.orange,
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   ),
-                ),
-              );
-            },
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Đóng'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Đóng'),
-          ),
-        ],
       ),
     );
   }
 
   void _showSearchHistoryDialog(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -1680,7 +2031,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.history_rounded, color: Colors.white, size: 20),
+              child: const Icon(
+                Icons.history_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 12),
             const Text('🕐 Lịch sử tìm kiếm'),
@@ -1721,7 +2076,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         gradient: LinearGradient(
                           colors: [
                             theme.colorScheme.primaryContainer.withOpacity(0.3),
-                            theme.colorScheme.tertiaryContainer.withOpacity(0.3),
+                            theme.colorScheme.tertiaryContainer.withOpacity(
+                              0.3,
+                            ),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -1763,7 +2120,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               _controller.text = city;
                             });
                             // Tự động tìm kiếm
-                            final weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
+                            final weatherProvider =
+                                Provider.of<WeatherProvider>(
+                                  context,
+                                  listen: false,
+                                );
                             weatherProvider.loadByCity(city);
                             _saveSearchHistory(city);
                           },
@@ -1782,9 +2143,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               },
               icon: const Icon(Icons.delete_outline_rounded),
               label: const Text('Xóa tất cả'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
-              ),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
             ),
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
@@ -1801,7 +2160,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     String? selectedCity1;
     String selectedCountry2 = 'VN';
     String? selectedCity2;
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => StatefulBuilder(
@@ -1817,7 +2176,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.compare_arrows_rounded, color: Colors.white, size: 20),
+                  child: const Icon(
+                    Icons.compare_arrows_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 const Expanded(child: Text('⚖️ So sánh thời tiết')),
@@ -1840,9 +2203,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ],
                         ),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.blue.withOpacity(0.3),
-                        ),
+                        border: Border.all(color: Colors.blue.withOpacity(0.3)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1874,7 +2235,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             ],
                           ),
                           const SizedBox(height: 12),
-                          
+
                           // Country dropdown 1
                           DropdownButtonFormField<String>(
                             value: selectedCountry1,
@@ -1890,25 +2251,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             items: _countries.entries.map((entry) {
                               return DropdownMenuItem(
                                 value: entry.key,
-                                child: Text(entry.value, style: const TextStyle(fontSize: 14)),
+                                child: Text(
+                                  entry.value,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               );
                             }).toList(),
                             onChanged: (value) {
                               setDialogState(() {
                                 selectedCountry1 = value!;
-                                selectedCity1 = _allCities[selectedCountry1]?.first;
+                                selectedCity1 =
+                                    _allCities[selectedCountry1]?.first;
                               });
                             },
                           ),
-                          
+
                           const SizedBox(height: 12),
-                          
+
                           // City dropdown 1
                           DropdownButtonFormField<String>(
-                            value: selectedCity1 ?? _allCities[selectedCountry1]?.first,
+                            value:
+                                selectedCity1 ??
+                                _allCities[selectedCountry1]?.first,
                             decoration: InputDecoration(
                               labelText: 'Thành phố',
-                              prefixIcon: const Icon(Icons.location_city_rounded),
+                              prefixIcon: const Icon(
+                                Icons.location_city_rounded,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -1918,7 +2287,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             items: _allCities[selectedCountry1]?.map((city) {
                               return DropdownMenuItem(
                                 value: city,
-                                child: Text(city, style: const TextStyle(fontSize: 14)),
+                                child: Text(
+                                  city,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -1930,18 +2302,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Icon so sánh
                     Icon(
                       Icons.compare_arrows_rounded,
                       color: theme.colorScheme.primary,
                       size: 32,
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Thành phố 2
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -1987,7 +2359,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             ],
                           ),
                           const SizedBox(height: 12),
-                          
+
                           // Country dropdown 2
                           DropdownButtonFormField<String>(
                             value: selectedCountry2,
@@ -2003,25 +2375,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             items: _countries.entries.map((entry) {
                               return DropdownMenuItem(
                                 value: entry.key,
-                                child: Text(entry.value, style: const TextStyle(fontSize: 14)),
+                                child: Text(
+                                  entry.value,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               );
                             }).toList(),
                             onChanged: (value) {
                               setDialogState(() {
                                 selectedCountry2 = value!;
-                                selectedCity2 = _allCities[selectedCountry2]?.first;
+                                selectedCity2 =
+                                    _allCities[selectedCountry2]?.first;
                               });
                             },
                           ),
-                          
+
                           const SizedBox(height: 12),
-                          
+
                           // City dropdown 2
                           DropdownButtonFormField<String>(
-                            value: selectedCity2 ?? _allCities[selectedCountry2]?.first,
+                            value:
+                                selectedCity2 ??
+                                _allCities[selectedCountry2]?.first,
                             decoration: InputDecoration(
                               labelText: 'Thành phố',
-                              prefixIcon: const Icon(Icons.location_city_rounded),
+                              prefixIcon: const Icon(
+                                Icons.location_city_rounded,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -2031,7 +2411,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             items: _allCities[selectedCountry2]?.map((city) {
                               return DropdownMenuItem(
                                 value: city,
-                                child: Text(city, style: const TextStyle(fontSize: 14)),
+                                child: Text(
+                                  city,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -2054,21 +2437,32 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
               ElevatedButton.icon(
                 onPressed: () async {
-                  final city1 = selectedCity1 ?? _allCities[selectedCountry1]?.first;
-                  final city2 = selectedCity2 ?? _allCities[selectedCountry2]?.first;
-                  
+                  final city1 =
+                      selectedCity1 ?? _allCities[selectedCountry1]?.first;
+                  final city2 =
+                      selectedCity2 ?? _allCities[selectedCountry2]?.first;
+
                   if (city1 != null && city2 != null) {
                     Navigator.pop(dialogContext);
                     // Thêm country code giống như trang chủ
                     final query1 = '$city1,${selectedCountry1.toLowerCase()}';
                     final query2 = '$city2,${selectedCountry2.toLowerCase()}';
-                    _showCompareResultDialog(context, query1, query2, city1, city2);
+                    _showCompareResultDialog(
+                      context,
+                      query1,
+                      query2,
+                      city1,
+                      city2,
+                    );
                   }
                 },
                 icon: const Icon(Icons.compare_rounded),
                 label: const Text('So sánh'),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ],
@@ -2078,9 +2472,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  void _showCompareResultDialog(BuildContext context, String query1, String query2, String displayCity1, String displayCity2) async {
+  void _showCompareResultDialog(
+    BuildContext context,
+    String query1,
+    String query2,
+    String displayCity1,
+    String displayCity2,
+  ) async {
     final theme = Theme.of(context);
-    
+
     // Show loading dialog
     showDialog(
       context: context,
@@ -2091,20 +2491,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text('Đang tải dữ liệu...', style: TextStyle(color: theme.colorScheme.onSurface)),
+            Text(
+              'Đang tải dữ liệu...',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ],
         ),
       ),
     );
-    
+
     // Fetch data
     Weather? weather1;
     Weather? weather2;
     String? error;
-    
+
     try {
       print('Fetching weather for: $query1');
-      weather1 = await WeatherApi(apiKey: '75b033222e4e5b2c9f5ee5ac7903b933').fetchByCity(query1);
+      weather1 = await WeatherApi(
+        apiKey: '75b033222e4e5b2c9f5ee5ac7903b933',
+      ).fetchByCity(query1);
       print('Got weather1: ${weather1.city}, ${weather1.tempC}°C');
     } catch (e) {
       print('Error fetching weather1: $e');
@@ -2120,10 +2525,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         time: DateTime.now(),
       );
     }
-    
+
     try {
       print('Fetching weather for: $query2');
-      weather2 = await WeatherApi(apiKey: '75b033222e4e5b2c9f5ee5ac7903b933').fetchByCity(query2);
+      weather2 = await WeatherApi(
+        apiKey: '75b033222e4e5b2c9f5ee5ac7903b933',
+      ).fetchByCity(query2);
       print('Got weather2: ${weather2.city}, ${weather2.tempC}°C');
     } catch (e) {
       print('Error fetching weather2: $e');
@@ -2139,23 +2546,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         time: DateTime.now(),
       );
     }
-    
+
     // Update state (sử dụng displayCity cho key)
     setState(() {
       _compareList = [displayCity1, displayCity2];
-      _compareWeatherData = {
-        displayCity1: weather1,
-        displayCity2: weather2,
-      };
+      _compareWeatherData = {displayCity1: weather1, displayCity2: weather2};
     });
-    
+
     print('Compare data updated: ${_compareWeatherData.keys}');
-    
+
     // Close loading dialog
     if (context.mounted) {
       Navigator.pop(context);
     }
-    
+
     // Show error if any
     if (error != null && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -2165,7 +2569,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ),
       );
     }
-    
+
     // Show result dialog
     if (context.mounted) {
       showDialog(
@@ -2181,7 +2585,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.assessment_rounded, color: Colors.white, size: 20),
+                child: const Icon(
+                  Icons.assessment_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 12),
               const Expanded(child: Text('📊 Kết quả so sánh')),
@@ -2195,7 +2603,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 // Header row
                 _buildCompareHeaderRow(theme),
                 const Divider(),
-                
+
                 // Data rows
                 ..._buildCompareDataRows(theme),
               ],
@@ -2226,42 +2634,48 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       child: Row(
         children: [
           const SizedBox(width: 100, child: Text('')), // Empty for label column
-          ..._compareList.map((city) => Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.blue, Colors.lightBlueAccent],
+          ..._compareList.map(
+            (city) => Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.blue, Colors.lightBlueAccent],
+                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      city,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 12,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        city,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _compareList.remove(city);
-                        _compareWeatherData.remove(city);
-                      });
-                    },
-                    child: const Icon(Icons.close, color: Colors.white, size: 16),
-                  ),
-                ],
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _compareList.remove(city);
+                          _compareWeatherData.remove(city);
+                        });
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -2269,16 +2683,32 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   List<Widget> _buildCompareDataRows(ThemeData theme) {
     return [
-      _buildCompareRow('🌡️ Nhiệt độ', (weather) => '${weather.tempC.round()}°C', theme),
+      _buildCompareRow(
+        '🌡️ Nhiệt độ',
+        (weather) => '${weather.tempC.round()}°C',
+        theme,
+      ),
       _buildCompareRow('💧 Độ ẩm', (weather) => '${weather.humidity}%', theme),
-      _buildCompareRow('💨 Gió', (weather) => '${weather.windMs.toStringAsFixed(1)} m/s', theme),
+      _buildCompareRow(
+        '💨 Gió',
+        (weather) => '${weather.windMs.toStringAsFixed(1)} m/s',
+        theme,
+      ),
       _buildCompareRow('☁️ Mô tả', (weather) => weather.description, theme),
       _buildCompareRow('� Quốc gia', (weather) => weather.country, theme),
-      _buildCompareRow('🕐 Thời gian', (weather) => _formatDateTime(weather.time), theme),
+      _buildCompareRow(
+        '🕐 Thời gian',
+        (weather) => _formatDateTime(weather.time),
+        theme,
+      ),
     ];
   }
 
-  Widget _buildCompareRow(String label, String Function(Weather) getValue, ThemeData theme) {
+  Widget _buildCompareRow(
+    String label,
+    String Function(Weather) getValue,
+    ThemeData theme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -2301,18 +2731,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: weather == null
-                  ? const Center(
-                      child: SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                    ? const Center(
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      )
+                    : Text(
+                        getValue(weather),
+                        style: const TextStyle(fontSize: 11),
+                        textAlign: TextAlign.center,
                       ),
-                    )
-                  : Text(
-                      getValue(weather),
-                      style: const TextStyle(fontSize: 11),
-                      textAlign: TextAlign.center,
-                    ),
               ),
             );
           }),
@@ -2327,7 +2757,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _showWeatherAlertsDialog(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => StatefulBuilder(
@@ -2342,7 +2772,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.notifications_active_rounded, color: Colors.white, size: 20),
+                child: const Icon(
+                  Icons.notifications_active_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 12),
               const Expanded(child: Text('🔔 Cảnh báo thời tiết')),
@@ -2359,25 +2793,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        _alertsEnabled 
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.1),
                         _alertsEnabled
-                          ? Colors.lightGreen.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.05),
+                            ? Colors.green.withOpacity(0.1)
+                            : Colors.grey.withOpacity(0.1),
+                        _alertsEnabled
+                            ? Colors.lightGreen.withOpacity(0.1)
+                            : Colors.grey.withOpacity(0.05),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: _alertsEnabled 
-                        ? Colors.green.withOpacity(0.3)
-                        : Colors.grey.withOpacity(0.3),
+                      color: _alertsEnabled
+                          ? Colors.green.withOpacity(0.3)
+                          : Colors.grey.withOpacity(0.3),
                     ),
                   ),
                   child: Row(
                     children: [
                       Icon(
-                        _alertsEnabled ? Icons.notifications_active : Icons.notifications_off,
+                        _alertsEnabled
+                            ? Icons.notifications_active
+                            : Icons.notifications_off,
                         color: _alertsEnabled ? Colors.green : Colors.grey,
                       ),
                       const SizedBox(width: 12),
@@ -2393,12 +2829,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               ),
                             ),
                             Text(
-                              _alertsEnabled 
-                                ? 'Nhận thông báo khi có điều kiện bất thường'
-                                : 'Tắt tất cả cảnh báo',
+                              _alertsEnabled
+                                  ? 'Nhận thông báo khi có điều kiện bất thường'
+                                  : 'Tắt tất cả cảnh báo',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.6,
+                                ),
                               ),
                             ),
                           ],
@@ -2418,10 +2856,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ],
                   ),
                 ),
-                
+
                 if (_alertsEnabled) ...[
                   const SizedBox(height: 20),
-                  
+
                   // Nhiệt độ tối đa
                   Text(
                     '🌡️ Nhiệt độ tối đa',
@@ -2451,7 +2889,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.red.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
@@ -2466,9 +2907,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Nhiệt độ tối thiểu
                   Text(
                     '❄️ Nhiệt độ tối thiểu',
@@ -2498,7 +2939,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.blue.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
@@ -2513,9 +2957,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Độ ẩm tối đa
                   Text(
                     '💧 Độ ẩm tối đa',
@@ -2545,7 +2989,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.cyan.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
@@ -2560,9 +3007,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Tốc độ gió tối đa
                   Text(
                     '💨 Tốc độ gió tối đa',
@@ -2592,7 +3039,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.purple.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
@@ -2607,9 +3057,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Info box
                   Container(
                     padding: const EdgeInsets.all(12),
@@ -2620,14 +3070,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.info_outline, color: Colors.amber, size: 20),
+                        const Icon(
+                          Icons.info_outline,
+                          color: Colors.amber,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             'Bạn sẽ thấy cảnh báo trên màn hình khi thời tiết vượt ngưỡng',
                             style: TextStyle(
                               fontSize: 12,
-                              color: theme.colorScheme.onSurface.withOpacity(0.7),
+                              color: theme.colorScheme.onSurface.withOpacity(
+                                0.7,
+                              ),
                             ),
                           ),
                         ),
@@ -2671,25 +3127,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _checkWeatherAlerts(Weather weather) {
     if (!_alertsEnabled) return;
-    
+
     List<String> alerts = [];
-    
+
     if (weather.tempC > _maxTempAlert) {
-      alerts.add('🔥 Nhiệt độ cao: ${weather.tempC.round()}°C (> ${_maxTempAlert.round()}°C)');
+      alerts.add(
+        '🔥 Nhiệt độ cao: ${weather.tempC.round()}°C (> ${_maxTempAlert.round()}°C)',
+      );
     }
-    
+
     if (weather.tempC < _minTempAlert) {
-      alerts.add('❄️ Nhiệt độ thấp: ${weather.tempC.round()}°C (< ${_minTempAlert.round()}°C)');
+      alerts.add(
+        '❄️ Nhiệt độ thấp: ${weather.tempC.round()}°C (< ${_minTempAlert.round()}°C)',
+      );
     }
-    
+
     if (weather.humidity > _maxHumidityAlert) {
-      alerts.add('💧 Độ ẩm cao: ${weather.humidity}% (> ${_maxHumidityAlert.round()}%)');
+      alerts.add(
+        '💧 Độ ẩm cao: ${weather.humidity}% (> ${_maxHumidityAlert.round()}%)',
+      );
     }
-    
+
     if (weather.windMs > _maxWindAlert) {
-      alerts.add('💨 Gió mạnh: ${weather.windMs.toStringAsFixed(1)} m/s (> ${_maxWindAlert.round()} m/s)');
+      alerts.add(
+        '💨 Gió mạnh: ${weather.windMs.toStringAsFixed(1)} m/s (> ${_maxWindAlert.round()} m/s)',
+      );
     }
-    
+
     if (alerts.isNotEmpty) {
       _showAlertNotification(alerts);
     }
@@ -2707,7 +3171,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 color: Colors.orange,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 24),
+              child: const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
             ),
             const SizedBox(width: 12),
             const Text('⚠️ Cảnh báo thời tiết'),
@@ -2716,16 +3184,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: alerts.map((alert) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              children: [
-                const Icon(Icons.arrow_right, size: 20, color: Colors.orange),
-                const SizedBox(width: 8),
-                Expanded(child: Text(alert)),
-              ],
-            ),
-          )).toList(),
+          children: alerts
+              .map(
+                (alert) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.arrow_right,
+                        size: 20,
+                        color: Colors.orange,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(child: Text(alert)),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
         ),
         actions: [
           TextButton(
@@ -2756,9 +3232,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             children: [
               Text(
                 strings.teamName,
-                style: Theme.of(dialogContext).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  dialogContext,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(strings.className),
@@ -2767,9 +3243,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 16),
-              _buildDeveloperInfo(strings.members, [
-                strings.memberDat,
-              ]),
+              _buildDeveloperInfo(strings.members, [strings.memberDat]),
               const SizedBox(height: 16),
               _buildDeveloperInfo(strings.technology, [
                 'Flutter 3.9.2+',
@@ -2801,21 +3275,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         const SizedBox(height: 8),
-        ...items.map((item) => Padding(
-          padding: const EdgeInsets.only(left: 16, bottom: 4),
-          child: Row(
-            children: [
-              const Text('• '),
-              Expanded(child: Text(item)),
-            ],
+        ...items.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 4),
+            child: Row(
+              children: [
+                const Text('• '),
+                Expanded(child: Text(item)),
+              ],
+            ),
           ),
-        )),
+        ),
       ],
     );
   }
@@ -2854,10 +3327,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
-              Text(
-                '${strings.version} 1.1.0',
-                textAlign: TextAlign.center,
-              ),
+              Text('${strings.version} 1.1.0', textAlign: TextAlign.center),
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 16),
@@ -2866,9 +3336,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text(
-                strings.appDescription,
-              ),
+              Text(strings.appDescription),
               const SizedBox(height: 16),
               Text(
                 strings.features,
@@ -2881,10 +3349,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 strings.feature3,
                 strings.feature4,
                 strings.feature5,
-              ].map((item) => Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 4),
-                child: Text(item),
-              )),
+              ].map(
+                (item) => Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 4),
+                  child: Text(item),
+                ),
+              ),
               const SizedBox(height: 16),
               Text(
                 strings.copyright,

@@ -16,7 +16,7 @@ void main() {
 
     // Verify that the app title is displayed
     expect(find.text('Weather Now'), findsOneWidget);
-    
+
     // Verify that search field exists
     expect(find.text('Nhập tên thành phố'), findsOneWidget);
   });

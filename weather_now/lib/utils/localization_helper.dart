@@ -7,8 +7,8 @@ class S {
   static AppStrings of(BuildContext context) {
     // Sử dụng context.read thay vì Provider.of để tránh assertion error
     final localeProvider = context.read<LocaleProvider>();
-    return localeProvider.locale.languageCode == 'vi' 
-        ? AppStrings.vi 
+    return localeProvider.locale.languageCode == 'vi'
+        ? AppStrings.vi
         : AppStrings.en;
   }
 }

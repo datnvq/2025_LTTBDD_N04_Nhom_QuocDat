@@ -20,7 +20,7 @@ class _WeatherSkeletonState extends State<WeatherSkeleton>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat(reverse: true);
-    
+
     _animation = Tween<double>(begin: 0.3, end: 0.7).animate(_controller);
   }
 
@@ -78,17 +78,11 @@ class _WeatherSkeletonState extends State<WeatherSkeleton>
                 const SizedBox(height: 24),
 
                 // Temperature
-                _SkeletonBox(
-                  width: 150,
-                  height: 72,
-                  opacity: _animation.value,
-                ),
+                _SkeletonBox(width: 150, height: 72, opacity: _animation.value),
 
                 const SizedBox(height: 24),
 
-                Divider(
-                  color: theme.colorScheme.outline.withOpacity(0.2),
-                ),
+                Divider(color: theme.colorScheme.outline.withOpacity(0.2)),
 
                 const SizedBox(height: 16),
 

@@ -64,13 +64,15 @@ class WeatherCard extends StatelessWidget {
                             Icon(
                               Icons.access_time,
                               size: 14,
-                              color: theme.colorScheme.onPrimaryContainer.withOpacity(0.7),
+                              color: theme.colorScheme.onPrimaryContainer
+                                  .withOpacity(0.7),
                             ),
                             const SizedBox(width: 4),
                             Text(
                               df.format(data.time),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onPrimaryContainer.withOpacity(0.7),
+                                color: theme.colorScheme.onPrimaryContainer
+                                    .withOpacity(0.7),
                               ),
                             ),
                           ],
@@ -125,7 +127,8 @@ class WeatherCard extends StatelessWidget {
                           Text(
                             'Celsius',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onPrimaryContainer.withOpacity(0.7),
+                              color: theme.colorScheme.onPrimaryContainer
+                                  .withOpacity(0.7),
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -263,10 +266,7 @@ class _WeatherDetailItem extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              color: color.withOpacity(0.7),
-            ),
+            style: TextStyle(fontSize: 12, color: color.withOpacity(0.7)),
           ),
           const SizedBox(height: 4),
           Text(

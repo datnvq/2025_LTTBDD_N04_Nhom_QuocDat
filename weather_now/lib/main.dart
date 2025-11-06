@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => WeatherProvider(WeatherApi(apiKey: apiKey)),
         ),
-        ChangeNotifierProvider(
-          create: (_) => LocaleProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
       ],
       child: Consumer<LocaleProvider>(
         builder: (context, localeProvider, child) {
@@ -60,20 +58,14 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.light,
       cardTheme: CardThemeData(
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -85,20 +77,14 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.dark,
       cardTheme: CardThemeData(
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
